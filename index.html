@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>JETPACK ESCAPE</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
@@ -11,17 +13,26 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         
         body {
             background: #0a0a0f;
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             font-family: 'Orbitron', monospace;
             overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        html {
+            height: -webkit-fill-available;
         }
         
         .game-wrapper {
@@ -77,6 +88,8 @@
                 0 0 30px rgba(255, 107, 53, 0.3),
                 inset 0 0 100px rgba(0, 0, 0, 0.5);
             background: linear-gradient(180deg, #0d0d1a 0%, #1a1a2e 100%);
+            max-width: 100%;
+            height: auto;
         }
         
         .controls-hint {
@@ -94,6 +107,180 @@
             padding: 0.2rem 0.6rem;
             border-radius: 3px;
             margin: 0 0.3rem;
+        }
+        
+        .controls-hint.mobile-hint {
+            display: none;
+        }
+        
+        /* Touch control button */
+        .touch-control {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.3) 0%, rgba(255, 107, 53, 0.1) 70%, transparent 100%);
+            border: 3px solid rgba(255, 107, 53, 0.6);
+            color: #ff6b35;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            z-index: 150;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .touch-control:active, .touch-control.active {
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.6) 0%, rgba(255, 107, 53, 0.3) 70%, transparent 100%);
+            border-color: #ff6b35;
+            transform: translateX(-50%) scale(0.95);
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.5);
+        }
+        
+        .touch-control-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .touch-control-icon {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        /* Mobile responsive styles */
+        @media (max-width: 850px) {
+            .game-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .hud {
+                width: 95%;
+                padding: 0 0.5rem;
+            }
+            
+            .hud-item {
+                font-size: 0.8rem;
+            }
+            
+            .hud-label {
+                font-size: 0.6rem;
+            }
+            
+            .game-wrapper {
+                width: 95%;
+                max-width: 100%;
+            }
+            
+            #gameCanvas {
+                width: 100%;
+                height: auto;
+            }
+            
+            .controls-hint:not(.mobile-hint) {
+                display: none;
+            }
+            
+            .controls-hint.mobile-hint {
+                display: block;
+                margin-top: 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .game-over-overlay {
+                padding: 1.5rem 2rem;
+                width: 85%;
+                max-width: 300px;
+            }
+            
+            .game-over-title {
+                font-size: 1.3rem;
+            }
+            
+            .final-score {
+                font-size: 1.1rem;
+            }
+            
+            .restart-btn {
+                font-size: 0.85rem;
+                padding: 0.8rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 850px) and (pointer: coarse) {
+            .touch-control {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        
+        /* Home screen mobile styles */
+        @media (max-width: 850px) {
+            .home-title {
+                font-size: 2rem;
+                letter-spacing: 0.1em;
+            }
+            
+            .home-subtitle {
+                font-size: 0.8rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .customization-panel {
+                padding: 1.2rem 1.5rem;
+                margin: 0 1rem 1.5rem 1rem;
+                width: calc(100% - 2rem);
+                max-width: 350px;
+            }
+            
+            .panel-title {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+            
+            .customization-row {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+            }
+            
+            .customization-label {
+                margin-bottom: 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .color-options {
+                gap: 0.5rem;
+            }
+            
+            .color-btn {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .character-preview {
+                margin-bottom: 1.5rem;
+            }
+            
+            #previewCanvas {
+                width: 100px;
+                height: 115px;
+            }
+            
+            .play-btn {
+                font-size: 1rem;
+                padding: 1rem 2rem;
+            }
         }
         
         .game-over-overlay {
@@ -464,6 +651,17 @@
         
         <div class="controls-hint">
             <span>SPACE</span> Hold to activate jetpack
+        </div>
+        <div class="controls-hint mobile-hint">
+            Hold the button below to fly
+        </div>
+        
+        <!-- Touch control for mobile -->
+        <div class="touch-control" id="touchControl">
+            <div class="touch-control-inner">
+                <div class="touch-control-icon">🚀</div>
+                <div>THRUST</div>
+            </div>
         </div>
     </div>
 
@@ -963,6 +1161,44 @@
                 keys.space = false;
             }
         });
+        
+        // Touch controls for mobile
+        const touchControl = document.getElementById('touchControl');
+        
+        touchControl.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            keys.space = true;
+            touchControl.classList.add('active');
+        }, { passive: false });
+        
+        touchControl.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            keys.space = false;
+            touchControl.classList.remove('active');
+        }, { passive: false });
+        
+        touchControl.addEventListener('touchcancel', (e) => {
+            keys.space = false;
+            touchControl.classList.remove('active');
+        });
+        
+        // Also support mouse for testing on desktop
+        touchControl.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            keys.space = true;
+            touchControl.classList.add('active');
+        });
+        
+        document.addEventListener('mouseup', () => {
+            if (touchControl.classList.contains('active')) {
+                keys.space = false;
+                touchControl.classList.remove('active');
+            }
+        });
+        
+        // Prevent default touch behaviors on game canvas
+        canvas.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+        canvas.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
         
         // Restart button only
         document.getElementById('restartBtn').addEventListener('click', () => {
